@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Registration - GramKart</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(to right,#295b3d,#69dc97);
+    padding:20px;
+}
+
+/* Container */
+.register-container{
+    background:white;
+    padding:35px;
+    width:400px;
+    border-radius:15px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.2);
+    text-align:center;
+}
+
+.register-container h2{
+    margin-bottom:20px;
+    color:#2e8b57;
+}
+
+/* Input */
+.input-group{
+    position:relative;
+    margin-bottom:18px;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px 40px 12px 12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+    transition:0.3s;
+}
+
+.input-group input:focus{
+    border-color:#2e8b57;
+}
+
+.input-group i{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#888;
+}
+
+/* Button */
+.register-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:25px;
+    background:#2e8b57;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.register-btn:hover{
+    background:#246b45;
+}
+
+/* Links */
+.extra-links{
+    margin-top:15px;
+    font-size:14px;
+}
+
+.extra-links a{
+    text-decoration:none;
+    color:#2e8b57;
+}
+
+.extra-links a:hover{
+    text-decoration:underline;
+}
+
+/* Responsive */
+@media(max-width:450px){
+    .register-container{
+        width:100%;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="register-container">
+    <h2>Create Account</h2>
+
+    <form id="registerForm">
+
+        <div class="input-group">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <i class="fas fa-user"></i>
+        </div>
+
+        <div class="input-group">
+            <input type="email" id="email" placeholder="Email Address" required>
+            <i class="fas fa-envelope"></i>
+        </div>
+
+        <div class="input-group">
+            <input type="tel" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}">
+            <i class="fas fa-phone"></i>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Create Password" required>
+            <i class="fas fa-lock"></i>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <i class="fas fa-lock"></i>
+        </div>
+
+        <button type="submit" class="register-btn">Register</button>
+
+        <div class="extra-links">
+            <p>Already have an account? 
+            <a href="cust-login-pg.html">Login</a></p>
+        </div>
+
+    </form>
+</div>
+
+<script>
+
+document.getElementById("registerForm").addEventListener("submit", function(event){
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if(password !== confirmPassword){
+        alert("❌ Passwords do not match!");
+        return;
+    }
+
+    if(password.length < 6){
+        alert("❌ Password must be at least 6 characters!");
+        return;
+    }
+
+    // Store user in localStorage
+    const userData = {
+        name: name,
+        email: email,
+        phone: phone,
+        password: password
+    };
+
+    localStorage.setItem("gramkartUser", JSON.stringify(userData));
+
+    alert("✅ Registration Successful! Please login.");
+
+    window.location.href = "cust-login-pg.html";
+});
+
+</script>
+
+</body>
+</html>
