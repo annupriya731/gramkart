@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Customer Registration - GramKart</title>
+<title>GramKart Registration</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -30,15 +29,43 @@ body{
 .register-container{
     background:white;
     padding:35px;
-    width:400px;
+    width:420px;
     border-radius:15px;
     box-shadow:0 15px 35px rgba(0,0,0,0.2);
     text-align:center;
+    animation:fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(-20px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 .register-container h2{
-    margin-bottom:20px;
+    margin-bottom:15px;
     color:#2e8b57;
+}
+
+/* Toggle */
+.toggle{
+    display:flex;
+    margin-bottom:20px;
+    background:#e9f7ef;
+    border-radius:25px;
+    overflow:hidden;
+}
+
+.toggle div{
+    flex:1;
+    padding:10px;
+    cursor:pointer;
+    transition:0.3s;
+    font-weight:600;
+}
+
+.toggle .active{
+    background:#2e8b57;
+    color:white;
 }
 
 /* Input */
@@ -106,18 +133,23 @@ body{
         width:100%;
     }
 }
-
 </style>
 </head>
 <body>
 
 <div class="register-container">
-    <h2>Create Account</h2>
+    <h2 id="formTitle">Customer Registration</h2>
+
+    <!-- Toggle -->
+    <div class="toggle">
+        <div id="customerBtn" class="active" onclick="switchUser('customer')">Customer</div>
+        <div id="sellerBtn" onclick="switchUser('seller')">Seller</div>
+    </div>
 
     <form id="registerForm">
 
         <div class="input-group">
-            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="text" id="name" placeholder="Full Name / Shop Name" required>
             <i class="fas fa-user"></i>
         </div>
 
@@ -141,7 +173,9 @@ body{
             <i class="fas fa-lock"></i>
         </div>
 
-        <button type="submit" class="register-btn">Register</button>
+        <button type="submit" class="register-btn" id="registerBtn">
+            Register as Customer
+        </button>
 
         <div class="extra-links">
             <p>Already have an account? 
@@ -152,6 +186,29 @@ body{
 </div>
 
 <script>
+
+let currentUserType = "customer";
+
+function switchUser(type){
+    const title = document.getElementById("formTitle");
+    const registerBtn = document.getElementById("registerBtn");
+    const customerBtn = document.getElementById("customerBtn");
+    const sellerBtn = document.getElementById("sellerBtn");
+
+    currentUserType = type;
+
+    if(type === "customer"){
+        title.innerText = "Customer Registration";
+        registerBtn.innerText = "Register as Customer";
+        customerBtn.classList.add("active");
+        sellerBtn.classList.remove("active");
+    }else{
+        title.innerText = "Seller Registration";
+        registerBtn.innerText = "Register as Seller";
+        sellerBtn.classList.add("active");
+        customerBtn.classList.remove("active");
+    }
+}
 
 document.getElementById("registerForm").addEventListener("submit", function(event){
     event.preventDefault();
@@ -172,15 +229,19 @@ document.getElementById("registerForm").addEventListener("submit", function(even
         return;
     }
 
-    // Store user in localStorage
     const userData = {
+        type: currentUserType,
         name: name,
         email: email,
         phone: phone,
         password: password
     };
 
-    localStorage.setItem("gramkartUser", JSON.stringify(userData));
+    if(currentUserType === "customer"){
+        localStorage.setItem("gramkartCustomer", JSON.stringify(userData));
+    }else{
+        localStorage.setItem("gramkartSeller", JSON.stringify(userData));
+    }
 
     alert("✅ Registration Successful! Please login.");
 

@@ -3,21 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Customer Login - GramKart</title>
-
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<!-- FontAwesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>GramKart Login</title>
 
 <style>
-
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Poppins', sans-serif;
+    font-family:'Poppins',sans-serif;
 }
 
 body{
@@ -25,132 +18,233 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(to right,#295b3d,#69dc97);
+    background:linear-gradient(135deg,#2e8b57,#548c6c);
+    overflow:hidden;
 }
 
-/* Login Container */
-.login-container{
-    background:white;
-    padding:40px;
-    width:350px;
-    border-radius:15px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.2);
-    text-align:center;
-}
-
-.login-container h2{
-    margin-bottom:20px;
-    color:#2e8b57;
-}
-
-/* Input Fields */
-.input-group{
-    position:relative;
-    margin-bottom:20px;
-}
-
-.input-group input{
-    width:100%;
-    padding:12px 40px 12px 12px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    outline:none;
-    transition:0.3s;
-}
-
-.input-group input:focus{
-    border-color:#2e8b57;
-}
-
-.input-group i{
+/* Floating Background */
+body::before, body::after{
+    content:"";
     position:absolute;
-    right:12px;
-    top:50%;
-    transform:translateY(-50%);
-    color:#888;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    animation:float 6s infinite alternate ease-in-out;
 }
 
-/* Button */
-.login-btn{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:25px;
-    background:#2e8b57;
+body::before{ top:-100px; left:-100px; }
+body::after{ bottom:-100px; right:-100px; animation-delay:3s; }
+
+@keyframes float{
+    from{ transform:translateY(0);}
+    to{ transform:translateY(40px);}
+}
+
+/* Container */
+.container{
+    backdrop-filter:blur(15px);
+    background:rgba(255,255,255,0.15);
+    padding:35px;
+    border-radius:20px;
+    width:360px;
     color:white;
-    font-weight:600;
+    text-align:center;
+    box-shadow:0 8px 32px rgba(0,0,0,0.3);
+    animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(-20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+/* Toggle Switch */
+.toggle{
+    display:flex;
+    background:rgba(255,255,255,0.2);
+    border-radius:30px;
+    margin-bottom:20px;
+    overflow:hidden;
+}
+
+.toggle div{
+    flex:1;
+    padding:10px;
     cursor:pointer;
     transition:0.3s;
 }
 
-.login-btn:hover{
-    background:#246b45;
+.toggle .active{
+    background:#00c6ff;
+    border-radius:30px;
 }
 
-/* Links */
-.extra-links{
+/* Inputs */
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:10px;
+    outline:none;
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#00c6ff;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#0072ff;
+    box-shadow:0 0 15px rgba(0,198,255,0.8);
+}
+
+.links{
     margin-top:15px;
     font-size:14px;
 }
 
-.extra-links a{
-    text-decoration:none;
-    color:#2e8b57;
+.links span{
+    cursor:pointer;
+    text-decoration:underline;
 }
 
-.extra-links a:hover{
-    text-decoration:underline;
+/* Popup */
+.popup{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.popup-content{
+    position:relative;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(15px);
+    padding:30px;
+    width:320px;
+    border-radius:20px;
+    color:white;
+    text-align:center;
+    animation:popupAnim 0.4s ease;
+}
+
+@keyframes popupAnim{
+    from{opacity:0; transform:scale(0.8);}
+    to{opacity:1; transform:scale(1);}
+}
+
+.close{
+    position:absolute;
+    right:20px;
+    top:10px;
+    font-size:22px;
+    cursor:pointer;
 }
 
 /* Responsive */
 @media(max-width:400px){
-    .login-container{
-        width:90%;
-    }
+    .container{ width:90%; padding:25px; }
+    .popup-content{ width:90%; }
 }
-
 </style>
 </head>
+
 <body>
-<!-- customer login -->
-<div class="login-container">
-    <h2> Login</h2>
 
-    <form onsubmit="loginUser(event)">
-        
-        <div class="input-group">
-            <input type="email" id="email" placeholder="Enter Email" required>
-            <i class="fas fa-envelope"></i>
-        </div>
+<div class="container">
+    <h2 id="formTitle">Customer Login</h2>
 
-        <div class="input-group">
-            <input type="password" id="password" placeholder="Enter Password" required>
-            <i class="fas fa-lock"></i>
-        </div>
+    <!-- Toggle -->
+    <div class="toggle">
+        <div id="customerBtn" class="active" onclick="switchUser('customer')">Customer</div>
+        <div id="sellerBtn" onclick="switchUser('seller')">Seller</div>
+    </div>
 
-        <button type="submit" class="login-btn">Login</button>
+    <!-- Login Form -->
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button id="loginBtn">Login as Customer</button>
 
-        <div class="extra-links">
-            <p><a href="#">Forgot Password?</a></p>
-            <p>Don't have an account? <a href="cust-reg.html">Register</a></p>
-        </div>
+    <div class="links">
+        <span onclick="openCreate()">Create Account</span> |
+        <span onclick="openForgot()">Forgot Password?</span>
+    </div>
+</div>
 
-    </form>
+<!-- Create Account Popup -->
+<div class="popup" id="createPopup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup('createPopup')">&times;</span>
+        <h3 id="createTitle">Create Customer Account</h3>
+        <input type="text" placeholder="Full Name">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button>Create Account</button>
+    </div>
+</div>
+
+<!-- Forgot Password Popup -->
+<div class="popup" id="forgotPopup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup('forgotPopup')">&times;</span>
+        <h3>Reset Password</h3>
+        <input type="email" placeholder="Enter your email">
+        <button>Send Reset Link</button>
+    </div>
 </div>
 
 <script>
-function loginUser(event){
-    event.preventDefault();
+function switchUser(type){
+    const title = document.getElementById("formTitle");
+    const loginBtn = document.getElementById("loginBtn");
+    const createTitle = document.getElementById("createTitle");
+    const customerBtn = document.getElementById("customerBtn");
+    const sellerBtn = document.getElementById("sellerBtn");
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    if(email === "admin@gramkart.in" && password === "1234"){
-        alert("Login Successful! Redirecting...");
-        window.location.href = "index.html";
+    if(type === "customer"){
+        title.innerText = "Customer Login";
+        loginBtn.innerText = "Login as Customer";
+        createTitle.innerText = "Create Customer Account";
+        customerBtn.classList.add("active");
+        sellerBtn.classList.remove("active");
     }else{
-        alert("Invalid Email or Password!");
+        title.innerText = "Seller Login";
+        loginBtn.innerText = "Login as Seller";
+        createTitle.innerText = "Create Seller Account";
+        sellerBtn.classList.add("active");
+        customerBtn.classList.remove("active");
     }
+}
+
+function openCreate(){
+    document.getElementById("createPopup").style.display="flex";
+}
+
+function openForgot(){
+    document.getElementById("forgotPopup").style.display="flex";
+}
+
+function closePopup(id){
+    document.getElementById(id).style.display="none";
 }
 </script>
 
